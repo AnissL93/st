@@ -2065,6 +2065,31 @@ strparse(void)
 }
 
 void
+newterm(const Arg *arg)
+{
+	char cwd[32];
+	pid_t p;
+
+	/* double fork so the new st is reparented to init, no zombies */
+	switch ((p = fork())) {
+	case -1:
+		return;
+	case 0:
+		if (fork() == 0) {
+			setsid();
+			snprintf(cwd, sizeof(cwd), "/proc/%d/cwd", pid);
+			if (chdir(cwd) < 0)
+				perror("st: chdir");
+			execlp("st", "st", NULL);
+			perror("st: execlp st");
+		}
+		_exit(0);
+	default:
+		waitpid(p, NULL, 0);
+	}
+}
+
+void
 externalpipe(const Arg *arg)
 {
 	int to[2];
