@@ -6,8 +6,8 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font =
-    "Rec Mono Casual:pixelsize=18:antialias=true:autohint=true,Ma Shan Zhen:pixelsize=18:antialias=true:autohint=true,Noto "
-    "Color Emoji:size=15";
+    /* fallback only: X resources st.font / st.fontalt0 (set by set-en-font, set-cjk-font) win */
+    "PxPlus IBM VGA 8x16:pixelsize=26.67,Cubic 11:pixelsize=24,Noto Color Emoji:size=15";
 static char *font2[] = {
     "Noto Color Emoji:pixelsize=18:antialias=true:autohint=true"};
 static int borderpx = 2;
