@@ -1510,6 +1510,11 @@ tsetattr(const int *attr, int l)
 		case 49:
 			term.c.attr.bg = defaultbg;
 			break;
+		case 58: /* underline color: unsupported, consume args */
+			tdefcolor(attr, &i, l);
+			break;
+		case 59:
+			break;
 		default:
 			if (BETWEEN(attr[i], 30, 37)) {
 				term.c.attr.fg = attr[i] - 30;
