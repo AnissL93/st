@@ -7,7 +7,19 @@ tmpfile=$(mktemp /tmp/st-cmd-output.XXXXXX)
 trap 'rm "$tmpfile"' 0 1 15
 sed -n "w $tmpfile"
 sed -i 's/\x0//g' "$tmpfile"
-ps1="$(whoami)@$(hostname -s)"
-chosen="$(grep -F "$ps1" "$tmpfile" | sed '$ d' | tac | dmenu -p "Copy which command's output?" -i -l 10 | sed 's/[^^]/[&]/g; s/\^/\\^/g')"
-eps1="$(echo "$ps1" | sed 's/[^^]/[&]/g; s/\^/\\^/g')"
-awk "/^$chosen$/{p=1;print;next} p&&/$eps1/{p=0};p" "$tmpfile" | xclip -selection clipboard
+# prompts: oh-my-bash sexy theme puts "user at host in dir" above "$ cmd";
+# bash default is "user@host:dir$ cmd"
+export header="^$(whoami) at $(hostname -s) "
+export uhost='^[^ ]+@[^ ]+:[^ ]*[$#]'
+chosen="$(awk '
+	h && /^[$#] +[^ ]/ || $0 ~ ENVIRON["uhost"] " +[^ ]" { print }
+	{ h = ($0 ~ ENVIRON["header"]) }
+' "$tmpfile" | tac | dmenu -p "Copy which command's output?" -i -l 10)"
+[ -n "$chosen" ] || exit
+# the most recent run of the chosen command, up to the next prompt
+chosen="$chosen" awk '
+	$0 == ENVIRON["chosen"] { buf = $0; f = 1; next }
+	f && ($0 ~ ENVIRON["header"] || $0 ~ ENVIRON["uhost"]) { f = 0; out = buf }
+	f { buf = buf "\n" $0 }
+	END { print (f ? buf : out) }
+' "$tmpfile" | xclip -selection clipboard

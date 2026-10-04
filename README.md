@@ -15,7 +15,9 @@ features that make it literally the best terminal emulator ever:
 + Fallback fonts are PxPlus IBM VGA 8x16 + Cubic 11 (CJK) + Noto Color Emoji.
   The fonts actually used come from the Xresources `st.font` / `st.fontalt0`.
 + Default alpha is 0.95.
-+ `alt-o` (copy output) finds the prompt by matching `user@host`.
++ `alt-o` (copy output) understands the two-line oh-my-bash `sexy` prompt
+  (`user at host in dir` then `$ cmd`) as well as the bash default
+  `user@host:dir$ cmd`, and copies the latest run of the chosen command.
 + `alt-l` (open url) launches with `systemd-run --user --scope`, so the opened
   program keeps running after st closes, and it does nothing if you cancel the
   menu.
