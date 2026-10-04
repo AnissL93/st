@@ -11,6 +11,8 @@ static char *font =
 static char *font2[] = {
     "Noto Color Emoji:pixelsize=18:antialias=true:autohint=true"};
 static int borderpx = 2;
+/* max text columns; wider windows center the text with side margins (0 = off) */
+static int maxcols = 100;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -219,6 +221,7 @@ ResourcePref resources[] = {
     {"bellvolume", INTEGER, &bellvolume},
     {"tabspaces", INTEGER, &tabspaces},
     {"borderpx", INTEGER, &borderpx},
+    {"maxcols", INTEGER, &maxcols},
     {"cwscale", FLOAT, &cwscale},
     {"chscale", FLOAT, &chscale},
     {"alpha", FLOAT, &alpha},
@@ -289,6 +292,7 @@ static Shortcut shortcuts[] = {
     {MODKEY, XK_y, externalpipe, {.v = copyurlcmd}},
     {MODKEY, XK_o, externalpipe, {.v = copyoutput}},
     {TERMMOD, XK_N, newterm, {.i = 0}},
+    {TERMMOD, XK_M, togglecenter, {.i = 0}},
 };
 
 /*
