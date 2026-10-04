@@ -3,6 +3,23 @@
 The [suckless terminal (st)](https://st.suckless.org/) with some additional
 features that make it literally the best terminal emulator ever:
 
+## Personal changes (this fork)
+
++ **Centered text column**, like an editor's zen mode: text is capped at
+  `maxcols` columns (default 100) and centered in wider windows, and any
+  leftover space is split into equal margins. Toggle with `alt-shift-m`. Set
+  `maxcols` in `config.h` or with `st.maxcols` in Xresources; `0` turns it off.
++ **New terminal in the current directory** with `alt-shift-n`.
++ SGR 58/59 (underline colour) escape codes are now ignored instead of being
+  misread as other attributes.
++ Fallback fonts are PxPlus IBM VGA 8x16 + Cubic 11 (CJK) + Noto Color Emoji.
+  The fonts actually used come from the Xresources `st.font` / `st.fontalt0`.
++ Default alpha is 0.95.
++ `alt-o` (copy output) finds the prompt by matching `user@host`.
++ `alt-l` (open url) launches with `systemd-run --user --scope`, so the opened
+  program keeps running after st closes, and it does nothing if you cancel the
+  menu.
+
 ## Unique features (using dmenu)
 
 + **follow urls** by pressing `alt-l`
@@ -24,8 +41,7 @@ features that make it literally the best terminal emulator ever:
 + Compatibility with `Xresources` and `pywal` for dynamic colors.
 + Default [gruvbox](https://github.com/morhetz/gruvbox) colors otherwise.
 + Transparency/alpha, which is also adjustable from your `Xresources`.
-+ Default font is system "mono" at 14pt, meaning the font will match your
-  system font.
++ Fonts are set through Xresources (see Personal changes for the fallback).
 
 ## Other st patches
 
@@ -39,7 +55,7 @@ features that make it literally the best terminal emulator ever:
 You should have xlib header files and libharfbuzz build files installed.
 
 ```
-git clone https://github.com/LukeSmithxyz/st
+git clone https://github.com/AnissL93/st
 cd st
 sudo make install
 ```
